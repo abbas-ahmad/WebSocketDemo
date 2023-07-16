@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Application</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var socket = new WebSocket("ws://localhost:8080/chat");
+        socket.onmessage = function(event) {
+            var message = event.data;
+            var chat = document.getElementById("chat");
+            var p = document.createElement("p");
+            p.innerText = message;
+            chat.appendChild(p);
+        };
+    </script>
+</head>
+<body>
+<h2>Welcome to the Chat, <span th:text="${username}">Username</span>!</h2>
+<div id="chat"></div>
+<input type="text" id="message">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+        function sendMessage() {
+            var input = document.getElementById("message");
+            var message = input.value;
+            socket.send(message);
+            input.value = "";
+        }
+    </script>
+</body>
+</html>
